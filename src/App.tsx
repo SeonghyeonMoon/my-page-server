@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import SignIn from './components/SignIn';
+import TodoList from './components/TodoList';
+import { useEffect } from 'react';
+import SignUp from './components/SignUp';
+import { Container } from '@mui/material';
 
-function App() {
+const App = () => {
+  const navigate = useNavigate();
+  const isToken = localStorage.getItem('accessToken');
+
+  useEffect(() => {
+    if (!isToken) {
+      navigate('/signin');
+    }
+  }, [isToken]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container
+      maxWidth='xs'
+      sx={{ backgroundColor: '#1a2027', mt: 10, p: 3 }}
+      style={{ borderRadius: '10px' }}
+    >
+      <Routes>
+        <Route path='/' element={<TodoList />} />
+        <Route path='/signin' element={<SignIn />} />
+        <Route path='/signup' element={<SignUp />} />
+      </Routes>
+    </Container>
   );
-}
+};
 
 export default App;
