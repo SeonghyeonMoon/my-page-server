@@ -16,12 +16,22 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { todo } from '../api';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 
 const TodoList = () => {
   const queryClient = useQueryClient();
   const [inputValue, setInputValue] = useState('');
   const { data } = useQuery('todo', todo.load);
   const [todos, setTodos] = useState(data);
+
+  const navigate = useNavigate();
+  const isToken = localStorage.getItem('accessToken');
+
+  useEffect(() => {
+    if (!isToken) {
+      navigate('/signin');
+    }
+  }, [isToken, navigate]);
 
   useEffect(() => {
     setTodos(data);
